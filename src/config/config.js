@@ -6,15 +6,15 @@ const program = new Command(); //Crea la instancia de comandos de commander.
 program
   .option("--test", "Variable para correr los test", false)
   .option("-d", "Variable para debug", false)
-  .option("-p <port>", "Puerto del servidor", 9090)
+  // .option("-p <port>", "Puerto del servidor", 8080)
   .option("--mode <mode>", "Modo de trabajo", "develop")
   .option("--persist <mode>", "Modo de persistencia", "mongodb");
 program.parse();
 
 console.log("Options: ", program.opts());
-console.log("Mode Option: ", program.opts().mode);
+// console.log("Mode Option: ", program.opts().mode);
 // console.log("Mode Option: ", program.opts().p);
-console.log("Test Mode on?: ", program.opts().test);
+// console.log("Test Mode on?: ", program.opts().test);
 
 const environment = program.opts().mode;
 
@@ -25,10 +25,10 @@ dotenv.config({
       : "./src/config/.env.development",
 });
 
-
 export default {
   port: process.env.PORT,
   persistence: process.env.PERSISTENCE,
+  environment: program.opts().mode,
   runTests: program.opts().test,
   mongoUrl: process.env.MONGO_URL,
   adminName: process.env.ADMIN_NAME,

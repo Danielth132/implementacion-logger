@@ -24,6 +24,7 @@ import emailRouter from "./routes/email.router.js";
 
 import jwtRouter from "./routes/jwt.router.js";
 import usersRouter from "./routes/users.router.js";
+import { addLogger } from "./config//logger.js";
 
 const app = express();
 
@@ -36,6 +37,8 @@ const MONGO_URL = config.mongoUrl;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(_dirname, "public")));
+
+app.use(addLogger);
 
 app.use(cookieParser("ClavePrivada"));
 
@@ -84,6 +87,12 @@ app.use("/api/email", emailRouter);
 app.use("/api/jwt", jwtRouter);
 app.use("/api/users", usersRouter);
 app.use("/mockingproducts", mockingRoutes);
+
+// Endpoint prueba Logger
+app.get("/loggerTest", (req, res) => {
+  req.logger.warning("Prueba de log level warning!");
+  res.send("Prueba de logger!");
+});
 
 // console.log(`Puerto: ${PORT}`);
 // console.log(`Conexion: ${MONGO_URL}`);
